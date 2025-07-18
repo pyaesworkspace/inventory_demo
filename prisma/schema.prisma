@@ -6,10 +6,66 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  // output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  password  String
+  name      String?
+  roles     UserRole[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  products         Product[]         @relation("ProductCreatedBy")
+  productCategories ProductCategory[] @relation("CategoryCreatedBy")
+}
+
+model Role {
+  id    String     @id @default(uuid())
+  name  String     @unique // e.g. 'admin', 'manager', 'sales'
+  users UserRole[]
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+
+  @@unique([userId, roleId])
+}
+
+model ProductCategory {
+  id        String     @id @default(uuid())
+  name      String
+  products  Product[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  createdById String?
+  createdBy   User?     @relation("CategoryCreatedBy", fields: [createdById], references: [id])
+}
+
+model Product {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  stock       Int
+  categoryId  String
+  category    ProductCategory @relation(fields: [categoryId], references: [id])
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  createdById String?
+  createdBy   User?      @relation("ProductCreatedBy", fields: [createdById], references: [id])
 }
