@@ -26,14 +26,25 @@ export const updateCategory = async (data) => {
         const updatedCategory = await prisma.productCategory.update({
             where: { id: data.id },
             data: {
-                name: data.name,
-                description: data.description,
+                name: data.name || "",
             },
         });
         return updatedCategory;
     }
     catch (error) {
         console.error("Error updating category:", error);
+        throw error;
+    }
+};
+export const deleteCategory = async (id) => {
+    try {
+        const deletedCategory = await prisma.productCategory.delete({
+            where: { id: id },
+        });
+        return deletedCategory;
+    }
+    catch (error) {
+        console.error("Error deleting category:", error);
         throw error;
     }
 };

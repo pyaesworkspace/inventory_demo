@@ -2,9 +2,11 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import productRoute from "./routes/product.js";
 import categoryRoute from "./routes/category.js";
+import authRoute from "./routes/auth.js";
 
 const app = new Hono();
 
+app.route("/auth", authRoute);
 app.route("/products", productRoute);
 app.route("/categories", categoryRoute);
 

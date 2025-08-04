@@ -10,10 +10,7 @@ export const getAllCategories = async () => {
   }
 };
 
-export const createCategory = async (data: {
-  name: string;
-  description?: string;
-}) => {
+export const createCategory = async (data: { name: string }) => {
   try {
     const newCategory = await prisma.productCategory.create({
       data: data,
@@ -36,6 +33,18 @@ export const updateCategory = async (data: { id: string; name?: string }) => {
     return updatedCategory;
   } catch (error) {
     console.error("Error updating category:", error);
+    throw error;
+  }
+};
+
+export const deleteCategory = async (id: string) => {
+  try {
+    const deletedCategory = await prisma.productCategory.delete({
+      where: { id: id },
+    });
+    return deletedCategory;
+  } catch (error) {
+    console.error("Error deleting category:", error);
     throw error;
   }
 };
