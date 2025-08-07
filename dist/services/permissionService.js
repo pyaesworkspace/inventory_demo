@@ -15,6 +15,8 @@ export const createPermission = async (data) => {
             data: {
                 name: data.name,
                 description: data.description || "",
+                module: data.module || "",
+                action: data.action || "",
             },
         });
         return permission;

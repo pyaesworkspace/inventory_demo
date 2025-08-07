@@ -8,13 +8,23 @@ export const getAllProducts = async (c: Context) => {
 
 export const createProduct = async (c: Context) => {
   const data = await c.req.json();
-  const newProduct = await productService.createProduct(data);
+  const user = c.get("user");
+  const userId = user ? user.userId : null;
+  const newProduct = await productService.createProduct({
+    ...data,
+    createdById: userId,
+  });
   return c.json(newProduct, 201);
 };
 
 export const updateProduct = async (c: Context) => {
   const data = await c.req.json();
-  const updatedProduct = await productService.updateProduct(data);
+  const user = c.get("user");
+  const userId = user ? user.userId : null;
+  const updatedProduct = await productService.updateProduct({
+    ...data,
+    createdById: userId,
+  });
   return c.json(updatedProduct);
 };
 

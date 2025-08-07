@@ -1,0 +1,10 @@
+import * as permissionController from "../controllers/permissionController";
+import { Hono } from "hono";
+import { authMiddleware } from "../middlewares/auth.js";
+import { error } from "console";
+const permissionRoute = new Hono();
+permissionRoute.get("/permissions", authMiddleware, permissionController.getAllPermissions);
+permissionRoute.post("/permissions", authMiddleware, permissionController.createPermission);
+permissionRoute.put("/permissions/:id", authMiddleware, permissionController.updatePermission);
+permissionRoute.delete("/permissions/:id", authMiddleware, permissionController.deletePermission);
+export default permissionRoute;

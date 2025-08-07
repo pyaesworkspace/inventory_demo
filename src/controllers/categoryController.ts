@@ -8,13 +8,23 @@ export const getAllCategories = async (c: Context) => {
 
 export const createCategory = async (c: Context) => {
   const data = await c.req.json();
-  const newCategory = await categoryService.createCategory(data);
+  const user = c.get("user");
+  const userId = user ? user.userId : null;
+  const newCategory = await categoryService.createCategory({
+    ...data,
+    createdById: userId,
+  });
   return c.json(newCategory, 201);
 };
 
 export const updateCategory = async (c: Context) => {
   const data = await c.req.json();
-  const updatedCategory = await categoryService.updateCategory(data);
+  const user = c.get("user");
+  const userId = user ? user.userId : null;
+  const updatedCategory = await categoryService.updateCategory({
+    ...data,
+    createdById: userId,
+  });
   return c.json(updatedCategory);
 };
 export const deleteCategory = async (c: Context) => {

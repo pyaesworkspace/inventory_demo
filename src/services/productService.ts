@@ -20,6 +20,7 @@ export const createProduct = async (data: {
   price: number;
   categoryId: string;
   stock: number;
+  createdById: string;
 }) => {
   try {
     const newProduct = await prisma.product.create({
@@ -29,6 +30,7 @@ export const createProduct = async (data: {
         price: data.price,
         categoryId: data.categoryId,
         stock: data.stock,
+        createdById: data.createdById,
       },
     });
     return newProduct;
@@ -45,6 +47,7 @@ export const updateProduct = async (data: {
   price?: number;
   categoryId?: string;
   stock?: number;
+  createdById?: string;
 }) => {
   try {
     const updatedProduct = await prisma.product.update({
@@ -55,6 +58,7 @@ export const updateProduct = async (data: {
         price: data.price,
         categoryId: data.categoryId,
         stock: data.stock,
+        createdById: data.createdById || "",
       },
     });
     return updatedProduct;

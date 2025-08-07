@@ -10,7 +10,10 @@ export const getAllCategories = async () => {
   }
 };
 
-export const createCategory = async (data: { name: string }) => {
+export const createCategory = async (data: {
+  name: string;
+  createdById: string;
+}) => {
   try {
     const newCategory = await prisma.productCategory.create({
       data: data,
@@ -22,12 +25,17 @@ export const createCategory = async (data: { name: string }) => {
   }
 };
 
-export const updateCategory = async (data: { id: string; name?: string }) => {
+export const updateCategory = async (data: {
+  id: string;
+  name?: string;
+  createdById?: string;
+}) => {
   try {
     const updatedCategory = await prisma.productCategory.update({
       where: { id: data.id },
       data: {
         name: data.name || "",
+        createdById: data.createdById || "",
       },
     });
     return updatedCategory;
